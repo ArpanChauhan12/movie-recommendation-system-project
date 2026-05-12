@@ -1,0 +1,158 @@
+# Movie Recommender System
+
+A content-based movie recommendation web application built with Python, Streamlit, and machine learning. Select any movie and instantly get 5 similar recommendations — complete with posters fetched live from TMDB.
+
+![Movie Recommender System](Predict.png)
+
+---
+
+## Live Demo
+
+> Run locally using Streamlit — see setup instructions below.
+
+---
+
+## Features
+
+- **Content-Based Filtering** — Recommends movies based on genres, cast, crew, keywords, and overview
+- **Live Movie Posters** — Fetches real-time posters via the TMDB API
+- **5 Smart Recommendations** — Displays the top 5 most similar movies for any selection
+- **Fast & Interactive UI** — Built with Streamlit for a clean, responsive experience
+- **Robust Error Handling** — Graceful fallback if poster or API is unavailable
+
+---
+
+## How It Works
+
+```
+User selects a movie
+        ↓
+Fetch its index from the movies dataset
+        ↓
+Compute cosine similarity against all other movies
+        ↓
+Sort by similarity score → Pick top 5
+        ↓
+Fetch posters from TMDB API
+        ↓
+Display recommendations with titles & posters
+```
+
+### ML Pipeline (Notebook)
+
+1. **Data Loading** — Merged `tmdb_5000_movies.csv` and `tmdb_5000_credits.csv`
+2. **Feature Engineering** — Extracted genres, cast (top 3), director, and keywords
+3. **Text Processing** — Applied stemming and combined features into a single "tags" column
+4. **Vectorization** — Used `CountVectorizer` (5000 features) to convert tags to vectors
+5. **Similarity Matrix** — Computed cosine similarity across all movie pairs
+6. **Serialization** — Saved `movies.pkl` and `similarity.pkl` for the Streamlit app
+
+---
+
+## Project Structure
+
+```
+movie-recommender-system/
+│
+├── app.py                                  # Streamlit web application
+├── movie-recommender-system-checkpoint.ipynb  # ML model training notebook
+│
+├── movies.pkl                              # Serialized movies dataframe
+├── similarity.pkl                          # Precomputed cosine similarity matrix
+│
+├── tmdb_5000_movies.csv                    # Raw movies dataset
+├── tmdb_5000_credits.csv                   # Raw credits dataset
+│
+├── Predict.png                             # App screenshot
+└── README.md                               # Project documentation
+```
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| Python 3.x | Core language |
+| Pandas | Data manipulation |
+| Scikit-learn | Vectorization & cosine similarity |
+| NLTK | Text stemming |
+| Streamlit | Web application UI |
+| Pickle | Model serialization |
+| TMDB API | Live movie poster fetching |
+| Requests | HTTP calls to TMDB |
+
+---
+
+## Installation & Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/movie-recommender-system.git
+cd movie-recommender-system
+```
+
+### 2. Install Dependencies
+
+```bash
+pip install pandas streamlit scikit-learn nltk requests
+```
+
+### 3. Run the App
+
+```bash
+streamlit run app.py
+```
+
+The app will open at `http://localhost:8501` in your browser.
+
+> **Note:** The `movies.pkl` and `similarity.pkl` files must be present in the root directory. They are already included in this repository.
+
+---
+
+## TMDB API Key
+
+This project uses the [TMDB API](https://www.themoviedb.org/documentation/api) to fetch movie posters.
+
+To use your own key:
+1. Register at [themoviedb.org](https://www.themoviedb.org/)
+2. Go to **Settings → API** and generate a key
+3. Replace the key in `app.py`:
+
+```python
+url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=YOUR_API_KEY_HERE"
+```
+
+---
+
+## Dataset
+
+- **Source:** [TMDB 5000 Movie Dataset on Kaggle](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata)
+- **Size:** ~5,000 movies
+- **Files used:**
+  - `tmdb_5000_movies.csv` — Movie metadata (genres, overview, keywords, etc.)
+  - `tmdb_5000_credits.csv` — Cast and crew information
+
+---
+
+## Screenshot
+
+![App Preview](Predict.png)
+
+---
+
+## Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request for:
+
+- Adding collaborative filtering
+- Improving UI/UX
+- Deploying to cloud (Heroku, Streamlit Cloud, etc.)
+- Adding user ratings or watchlist features
+
+---
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
